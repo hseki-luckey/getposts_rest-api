@@ -1,0 +1,51 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>
+$(function(){
+	// 非同期通信OFF
+	$.ajaxSetup({async: false});
+
+	var site_url = 'サイトURL';
+	// 投稿を取得
+	var params = '?per_page=5&status=publish&orderby=date&order=desc';
+	var posts_json = site_url + '/wp-json/wp/v2/posts' + params;
+
+	$.getJSON(posts_json, function(data){
+		var len = data.length;
+		if(len > 0){
+			for(var i=0; i<len; i++){
+				var post_id = data[i].id;
+				// タイトル
+				$("#posts").append($('<li>').attr('id', 'post' + post_id).text(data[i].title.rendered));
+				$("#posts li#post" + post_id).append($('<ul>').attr('id', 'info' + data[i].id));
+				// 著者
+				var user_json = data[i]._links.author[0].href;
+				$.getJSON(user_json, function(user){
+					$("#posts ul#info" + post_id).append($('<li id="author">').text('著者：' + user.name));
+				});
+				// 更新日
+				var date = data[i].date;
+				var post_date = date.substr(0, 4) + '/' + date.substr(5, 2) + '/' + date.substr(8, 2);
+				$("#posts ul#info" + post_id).append($('<li id="date">').text('更新日：' + post_date));
+				// 概要
+				var content = data[i].content.rendered.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'').substr(0, 100);
+				$("#posts ul#info" + post_id).append($('<li id="content">').text('概要：' + content));
+				// カテゴリ
+				$("#posts ul#info" + post_id).append($('<li id="cats">').text('カテゴリ：'));
+				var post_cats = data[i].categories;
+				var cats_cnt = post_cats.length;
+				if(cats_cnt > 0){
+					var cat_links = '';
+					for(var j=0; j<cats_cnt; j++){
+						var cat_json = site_url + '/wp-json/wp/v2/categories/' + post_cats[j];
+						$.getJSON(cat_json, function(cat){
+							cat_links += '<a href="' + cat.link + '">' + cat.name + '</a>　';
+						});
+					}
+					$("#posts ul#info" + post_id + " li#cats").append(cat_links);
+				}
+			}
+		}
+	});
+});
+</script>
+<ul id="posts"></ul>

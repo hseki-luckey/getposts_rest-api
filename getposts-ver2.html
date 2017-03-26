@@ -22,10 +22,10 @@ $(function(){
 				$.getJSON(user_json, function(user){
 					$("#posts ul#info" + post_id).append($('<li id="author">').text('著者：' + user.name));
 				});
-				// 更新日
+				// 公開日
 				var date = data[i].date;
 				var post_date = date.substr(0, 4) + '/' + date.substr(5, 2) + '/' + date.substr(8, 2);
-				$("#posts ul#info" + post_id).append($('<li id="date">').text('更新日：' + post_date));
+				$("#posts ul#info" + post_id).append($('<li id="date">').text('公開日：' + post_date));
 				// 概要
 				var content = data[i].content.rendered.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'').substr(0, 100);
 				$("#posts ul#info" + post_id).append($('<li id="content">').text('概要：' + content));

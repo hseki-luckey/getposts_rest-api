@@ -20,7 +20,7 @@ $target_posts = json_decode($posts_json, true);
 	<li><?php echo $post['title']['rendered']; ?>
 	<ul>
 	<li>著者：<?php echo $author['name']; ?></li>
-	<li>更新日：<?php echo date('Y/m/d', strtotime($post['date'])); ?></li>
+	<li>公開日：<?php echo date('Y/m/d', strtotime($post['date'])); ?></li>
 	<li>概要：<?php echo mb_substr(strip_tags($post['content']['rendered']), 0, 100, 'UTF-8'); ?></li>
 	<li>カテゴリ：
 	<?php

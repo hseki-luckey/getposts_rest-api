@@ -22,7 +22,7 @@ $target_posts = get_posts($arr);
 <li><?php echo $post->post_title; ?>
 	<ul>
 	<li>著者：<?php echo $author->display_name; ?></li>
-	<li>更新日：<?php echo date('Y/m/d', strtotime($post->post_date)); ?></li>
+	<li>公開日：<?php echo date('Y/m/d', strtotime($post->post_date)); ?></li>
 	<li>概要：<?php echo mb_substr(strip_tags($post->post_content), 0, 100, 'UTF-8'); ?></li>
 	<li>カテゴリ：
 	<?php
